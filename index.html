@@ -141,7 +141,7 @@ h1{
         <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle2">特急踊り子</span><br><span class="achvtxtDiscribe" id="achvtxtDscr2">15分以内にクリア</span></td>
         <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle3">サンライズ</span><br><span class="achvtxtDiscribe" id="achvtxtDscr3">10分以内にクリア</span></td>
         <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle4">新幹線</span><br><span class="achvtxtDiscribe" id="achvtxtDscr4">7分以内にクリア</span></td>
-        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle5">リニア</span><br><span class="achvtxtDiscribe" id="achvtxtDscr5">5分以内にクリア</span></td>
+        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle5">リニア</span><br><span class="achvtxtDiscribe" id="achvtxtDscr5">4分以内にクリア</span></td>
         <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle6">ジェット機</span><br><span class="achvtxtDiscribe" id="achvtxtDscr6">3分以内にクリア</span></td>
     </tr>
 </table>
@@ -404,7 +404,7 @@ function achvReload(){
                     achvimg3Object.src = achvimgData[2].src;
                     if (bestTime <= 420){
                         achvimg4Object.src = achvimgData[3].src;
-                        if (bestTime <= 300){
+                        if (bestTime <= 240){
                             achvimg5Object.src = achvimgData[4].src;
                             if (bestTime <= 180){
                                 achvimg6Object.src = achvimgData[5].src;
@@ -444,10 +444,10 @@ function achvReload(){
                         achvtxtTitle4Object.innerHTML = "新幹線(Hard)";
                         achvtxtDscr4Object.innerHTML = "ハードモードで7分以内にクリア";
                         achvtxtDscr4Object.style.fontSize = "12px";
-                        if (hardBestTime <= 300){
+                        if (hardBestTime <= 240){
                             achvimg5Object.style.borderColor = "#ffdd00";
                             achvtxtTitle5Object.innerHTML = "リニア(Hard)";
-                            achvtxtDscr5Object.innerHTML = "ハードモードで5分以内にクリア";
+                            achvtxtDscr5Object.innerHTML = "ハードモードで4分以内にクリア";
                             achvtxtDscr5Object.style.fontSize = "12px";
                             if (hardBestTime <= 180){
                                 achvimg6Object.style.borderColor = "#ffdd00";
