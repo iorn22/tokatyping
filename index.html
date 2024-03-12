@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta chrset="utf-8">
+<title>トカ線タイピング</title>
+<style>
+body{
+    background-color:#dddddd;
+}
+h1{
+    margin-top:0px;
+    margin-bottom:0px;
+    font-size:40px;
+}
+#buttonTable{
+    margin:auto;
+}
+.buttonMargin{
+    width:5em;
+}
+#buttonBetween{
+    width:5em;
+}
+#startButton{
+    width:10em;
+    height:4em;
+    text-align:center;
+    /*display:block;
+    margin:auto;
+    display:flex;
+    justify-content:space-around;*/
+}
+#dataExport{
+    margin:auto;
+}
+#scoretext{
+    font-size:100px;
+    font-weight:bold;
+    font-family:serif;
+    text-align:center;
+}
+#timetext{
+    font-size:25px;
+    float:left;
+    text-align:left;
+}
+#besttimetext{
+    font-size:25px;
+    float:right;
+    text-align:right;
+}
+#hardbesttimetext{
+    font-size:25px;
+    float:right;
+    text-align:right;
+    margin-top:-20px;
+}
+#problemtext-kanji{
+    font-size:40px;
+    font-weight:bold;
+    text-align:center;
+}
+#problemtext{
+    font-size:25px;
+    font-weight:bold;
+    text-align:center;
+}
+#achv{
+    margin:auto;
+    border-spacing:20px 5px;
+}
+#achvimg1{
+    border:5px solid #999;
+    padding:0px;
+}
+#achvimg2{
+    border:5px solid #999;
+    padding:0px;
+}
+#achvimg3{
+    border:5px solid #999;
+    padding:0px;
+}
+#achvimg4{
+    border:5px solid #999;
+    padding:0px;
+}
+#achvimg5{
+    border:5px solid #999;
+    padding:0px;
+}
+#achvimg6{
+    border:5px solid #999;
+    padding:0px;
+}
+.achvtxt{
+    text-align:center;
+}
+.achvtxtTitle{
+    font-size:30px;
+    font-weight:bold;
+}
+.achvtxtDiscribe{
+    font-size:20px;
+}
+
+</style>
+</head>
+<body>
+<h1 id="title">トカ線タイピング</h1>
+<table id="buttonTable">
+    <tr>
+        <td><input type="checkbox" id="soundButton">効果音<br><small>&emsp;&emsp;クリア時のみ</small></input></td>
+        <td class="buttonMargin"></td>
+        <td><button id="startButton">ゲームスタート</button></td>
+        <td id="buttonBetween"></td>
+        <td><input type="checkbox" id="hardmodeButton"><span id="hardmodeLabel">Hardモード<br><small>&emsp;&emsp;ミスすると1秒のペナルティがつくモード</small></span></input></td>
+        <!--<td><button id="saveButton">ハイスコア情報セーブ<br><small>ページを移動する前に<strong>必ず</strong>押してください</small></button></td>-->
+    </tr>
+</table>
+<br>
+<div id="scoretext">0</div>
+<div id="problemtext-kanji">ここのローマ字表記が下に出ます</div>
+<div id="problemtext">ここに書かれている内容を入力してください</div>
+<div id="timetext">0:00</div>
+<div id="besttimetext">Best: 99:99</div><br><br>
+<div id="hardbesttimetext">Hard Mode Best: 99:99</div>
+<br><br><hr>
+<h1>実績</h1>
+<table id="achv">
+    <tr>
+        <td><img id="achvimg1" src="img//未解禁.jpg" width=200px height=200px></td>
+        <td><img id="achvimg2" src="img//未解禁.jpg" width=200px height=200px></td>
+        <td><img id="achvimg3" src="img//未解禁.jpg" width=200px height=200px></td>
+        <td><img id="achvimg4" src="img//未解禁.jpg" width=200px height=200px></td>
+        <td><img id="achvimg5" src="img//未解禁.jpg" width=200px height=200px></td>
+        <td><img id="achvimg6" src="img//未解禁.jpg" width=200px height=200px></td>
+    </tr>
+    <tr>
+        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle1">普通</span><br><span class="achvtxtDiscribe" id="achvtxtDscr1">20分以内にクリア</span></td>
+        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle2">特急踊り子</span><br><span class="achvtxtDiscribe" id="achvtxtDscr2">15分以内にクリア</span></td>
+        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle3">サンライズ</span><br><span class="achvtxtDiscribe" id="achvtxtDscr3">10分以内にクリア</span></td>
+        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle4">新幹線</span><br><span class="achvtxtDiscribe" id="achvtxtDscr4">7分以内にクリア</span></td>
+        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle5">リニア</span><br><span class="achvtxtDiscribe" id="achvtxtDscr5">5分以内にクリア</span></td>
+        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle6">ジェット機</span><br><span class="achvtxtDiscribe" id="achvtxtDscr6">3分以内にクリア</span></td>
+    </tr>
+</table>
+<hr>
+<table id="dataExport">
+    <tr>
+        <td><button id="saveButton">セーブ</button></td>
+        <td class="buttonMargin"></td>
+        <td><button id="loadButton">ロード</button></td>
+        <!--<td><button id="saveButton">ハイスコア情報セーブ<br><small>ページを移動する前に<strong>必ず</strong>押してください</small></button></td>-->
+    </tr>
+    <tr>
+        <td><textarea id="saveCode" rows="3" cols="25"></textarea></td>
+        <td style="width: 10em;"></td>
+        <td><textarea id="loadCode" rows="3" cols="25"></textarea></td>
+        <!--<td><button id="saveButton">ハイスコア情報セーブ<br><small>ページを移動する前に<strong>必ず</strong>押してください</small></button></td>-->
+    </tr>
+</table>
+
+<script>
+
+//製作者:いーものハイスコア
+//Normal Mode: 3:49くらい
+//Hard Mode: 4:30くらい
+
+var isGameStarted = false;
+
+var problemtext = new Array();
+
+var debugMode = 0;
+
+if (debugMode == 1){
+    problemtext = [["1", "q"], ["2", "w"], ["3", "e"]]; //テスト用
+}else{
+    problemtext =
+    [["東京", "Tokyo"], ["有楽町", "Yurakucho"], ["新橋", "Shimbashi"], ["浜松町", "Hamamatsucho"], ["田町", "Tamachi"],
+    ["高輪ゲートウェイ", "Takanawa-Gateway"], ["品川", "Shinagawa"], ["大井町", "Oimachi"], ["大森", "Omori"], ["蒲田", "Kamata"],
+    ["川崎", "Kawasaki"], ["鶴見", "Tsurumi"], ["新子安", "Shin-Koyasu"], ["東神奈川", "Higashi-Kanagawa"], ["横浜", "Yokohama"],
+    ["保土ヶ谷", "Hodogaya"], ["東戸塚", "Higashi-Totsuka"], ["戸塚", "Totsuka"], ["大船", "Ofuna"], ["藤沢", "Fujisawa"], ["辻堂", "Tsujido"],
+    ["茅ヶ崎", "Chigasaki"], ["平塚", "Hiratsuka"], ["大磯", "Oiso"], ["二宮", "Ninomiya"], ["国府津", "Kozu"], ["鴨宮", "Kamonomiya"],
+    ["小田原", "Odawara"], ["早川", "Hayakawa"], ["根府川", "Nebukawa"], ["真鶴", "Manazuru"], ["湯河原", "Yugawara"], ["熱海", "Atami"],
+    ["函南", "Kannami"], ["三島", "Mishima"], ["沼津", "Numazu"], ["片浜", "Katahama"], ["原", "Hara"], ["東田子の浦", "Higashi-Tagonoura"],
+    ["吉原", "Yoshiwara"], ["富士", "Fuji"], ["富士川", "Fujikawa"], ["新蒲原", "Shin-Kanbara"], ["蒲原", "Kanbara"], ["由比", "Yui"],
+    ["興津", "Okitsu"], ["清水", "Shimizu"], ["草薙", "Kusanagi"], ["東静岡", "Higashi-Shizuoka"], ["静岡", "Shizuoka"], ["安倍川", "Abekawa"],
+    ["用宗", "Mochimune"], ["焼津", "Yaizu"], ["西焼津", "Nishi-Yaizu"], ["藤枝", "Fujieda"], ["六合", "Rokugo"], ["島田", "Shimada"],
+    ["金谷", "Kanaya"], ["菊川", "Kikugawa"], ["掛川", "Kakegawa"], ["愛野", "Aino"], ["袋井", "Fukuroi"], ["御厨", "Mikuriya"], ["磐田", "Iwata"],
+    ["豊田町", "Toyodacho"], ["天竜川", "Tenryugawa"], ["浜松", "Hamamatsu"], ["高塚", "Takatsuka"], ["舞阪", "Maisaka"], ["弁天島", "Bentenjima"],
+    ["新居町", "Araimachi"], ["鷲津", "Washizu"], ["新所原", "Shinjohara"], ["二川", "Futagawa"], ["豊橋", "Toyohashi"], ["西小坂井", "Nishi-Kozakai"],
+    ["愛知御津", "Aichi-Mito"], ["三河大塚", "Mikawa-Otsuka"], ["三河三谷", "Mikawa-Miya"], ["蒲郡", "Gamagori"], ["三河塩津", "Mikawa-Shiotsu"],
+    ["三ヶ根", "Sangane"], ["幸田", "Koda"], ["相見", "Aimi"], ["岡崎", "Okazaki"], ["西岡崎", "Nishi-Okazaki"], ["安城", "Anjo"],
+    ["三河安城", "Mikawa-Anjo"], ["東刈谷", "Higashi-Kariya"], ["野田新町", "Noda-Shimmachi"], ["刈谷", "Kariya"], ["逢妻", "Aizuma"], ["大府", "Obu"],
+    ["共和", "Kyowa"], ["南大高", "Minami-Odaka"], ["大高", "Odaka"], ["笠寺", "Kasadera"], ["熱田", "Atsuta"], ["金山", "Kanayama"], ["尾頭橋", "Otobashi"],
+    ["名古屋", "Nagoya"], ["枇杷島", "Biwajima"], ["清洲", "Kiyosu"], ["稲沢", "Inazawa"], ["尾張一宮", "Owari-Ichinomiya"], ["木曽川", "Kisogawa"],
+    ["岐阜", "Gifu"], ["西岐阜", "Nishi-Gifu"], ["穂積", "Hozumi"], ["大垣", "Ogaki"], ["垂井", "Tarui"], ["関ヶ原", "Sekigahara"], ["柏原", "Kashiwabara"],
+    ["近江長岡", "Omi-Nagaoka"], ["醒ヶ井", "Samegai"], ["米原", "Maibara"], ["彦根", "Hikone"], ["南彦根", "Minami-Hikone"], ["河瀬", "Kawase"],
+    ["稲枝", "Inae"], ["能登川", "Notogawa"], ["安土", "Azuchi"], ["近江八幡", "Omi-Hachiman"], ["篠原", "Shinohara"], ["野洲", "Yasu"], ["守山", "Moriyama"],
+    ["栗東", "Ritto"], ["草津", "Kusatsu"], ["南草津", "Minami-Kusatsu"], ["瀬田", "Seta"], ["石山", "Ishiyama"], ["膳所", "Zeze"], ["大津", "Otsu"],
+    ["山科", "Yamashina"], ["京都", "Kyoto"], ["西大路", "Nishioji"], ["桂川", "Katsuragawa"], ["向日町", "Mukomachi"], ["長岡京", "Nagaokakyo"],
+    ["山崎", "Yamazaki"], ["島本", "Shimamoto"], ["高槻", "Takatsuki"], ["摂津富田", "Settsu-Tonda"], ["JR総持寺", "JR-Sojiji"], ["茨木", "Ibaraki"],
+    ["千里丘", "Senrioka"], ["岸辺", "Kishibe"], ["吹田", "Suita"], ["東淀川", "Higashi-Yodogawa"], ["新大阪", "Shin-Osaka"], ["大阪", "Osaka"],
+    ["塚本", "Tsukamoto"], ["尼崎", "Amagasaki"], ["立花", "Tachibana"], ["甲子園口", "Koshienguchi"], ["西宮", "Nishinomiya"], ["さくら夙川", "Sakurashukugawa"],
+    ["芦屋", "Ashiya"], ["甲南山手", "Konan-Yamate"], ["摂津本山", "Settsu-Motoyama"], ["住吉", "Sumiyoshi"], ["六甲道", "Rokkomichi"], ["摩耶", "Maya"],
+    ["灘", "Nada"], ["三ノ宮", "Sannomiya"], ["元町", "Motomachi"], ["神戸", "Kobe"]]; //問題一覧
+};
+
+//divとJSを紐づけ
+const titleObject = document.getElementById("title");
+const scoreObject = document.getElementById("scoretext");
+const problemObjectKanji = document.getElementById("problemtext-kanji");
+const problemObject = document.getElementById("problemtext");
+const startButtonObject = document.getElementById("startButton");
+const timeObject = document.getElementById("timetext");
+var timerID = 0;
+const bestTimeObject = document.getElementById("besttimetext");
+const hardbestTimeObject = document.getElementById("hardbesttimetext");
+const startBtObject = document.getElementById("startButton");
+const saveButtonObject = document.getElementById("saveButton");
+const loadButtonObject = document.getElementById("loadButton");
+const saveCodeObject = document.getElementById("saveCode");
+const loadCodeObject = document.getElementById("loadCode");
+const buttonBetweenObject = document.getElementById("buttonBetween");
+const hardmodeButtonObject = document.getElementById("hardmodeButton");
+const hardmodeLabelObject = document.getElementById("hardmodeLabel");
+const soundButtonObject = document.getElementById("soundButton");
+
+const achvimg1Object = document.getElementById("achvimg1");
+const achvimg2Object = document.getElementById("achvimg2");
+const achvimg3Object = document.getElementById("achvimg3");
+const achvimg4Object = document.getElementById("achvimg4");
+const achvimg5Object = document.getElementById("achvimg5");
+const achvimg6Object = document.getElementById("achvimg6");
+
+const achvtxtTitle1Object = document.getElementById("achvtxtTitle1");
+const achvtxtTitle2Object = document.getElementById("achvtxtTitle2");
+const achvtxtTitle3Object = document.getElementById("achvtxtTitle3");
+const achvtxtTitle4Object = document.getElementById("achvtxtTitle4");
+const achvtxtTitle5Object = document.getElementById("achvtxtTitle5");
+const achvtxtTitle6Object = document.getElementById("achvtxtTitle6");
+
+const achvtxtDscr1Object = document.getElementById("achvtxtDscr1");
+const achvtxtDscr2Object = document.getElementById("achvtxtDscr2");
+const achvtxtDscr3Object = document.getElementById("achvtxtDscr3");
+const achvtxtDscr4Object = document.getElementById("achvtxtDscr4");
+const achvtxtDscr5Object = document.getElementById("achvtxtDscr5");
+const achvtxtDscr6Object = document.getElementById("achvtxtDscr6");
+
+const achvimgData = new Array();
+achvimgData[0] = new Image();
+achvimgData[0].src = "img/E231.jpg";
+achvimgData[1] = new Image();
+achvimgData[1].src = "img/踊り子.jpg";
+achvimgData[2] = new Image();
+achvimgData[2].src = "img/サンライズ出雲.jpg";
+achvimgData[3] = new Image();
+achvimgData[3].src = "img/N700.jpg";
+achvimgData[4] = new Image();
+achvimgData[4].src = "img/リニア.jpg";
+achvimgData[5] = new Image();
+achvimgData[5].src = "img/飛行機.png";
+
+const clearSound = new Audio("snd/クリア.mp3");
+
+var score = 0;
+var problemnum = 0;
+var problemletternum = 0;
+//var bestTime = document.cookie;
+var bestTime = 99 * 60 + 59;
+var hardBestTime = 99 * 60 + 59;
+var isGameCompleted = 0
+var hardmode = 0;
+var penaltyTime = 0;
+
+hardmodeButtonObject.disabled = false;
+hardmodeButtonObject.style.display = "none";
+buttonBetweenObject.style.display = "none";
+hardmodeLabelObject.style.display = "none";
+hardbestTimeObject.style.display = "none";
+
+window.addEventListener("beforeunload", function(e){e.returnValue = "ハイスコアが消えますがよろしいですか？"}, false);
+
+function varReset(){
+    score = 0;
+    problemnum = 0;
+    problemletternum = 0;
+    penaltyTime = 0;
+};
+
+function problemload(){
+    scoreObject.innerHTML = String(score);
+    //problemnum = Math.floor(Math.random()*problemtext.length); //問題を決定
+    problemnum = score;
+    problemObjectKanji.innerHTML = problemtext[problemnum][0];
+    problemObject.innerHTML = problemtext[problemnum][1];
+};
+
+function gameClear(){
+    scoreObject.innerHTML = String(score);
+    clearInterval(timerID);
+    clearTime = (Date.now() - startTime) / 1000;
+    if(soundButtonObject.checked){clearSound.play()};
+    problemObjectKanji.innerHTML = "クリア！！！";
+    problemObject.innerHTML = "クリアタイム:" + secToText(clearTime + penaltyTime);
+    startBtObject.textContent = "リトライ";
+    isGameStarted = false;
+    hardmodeButtonObject.disabled = false;
+    if(hardmode == 0){
+        if(clearTime < bestTime){
+            //Set-Cookie: clearTime;
+            bestTime = clearTime;
+            bestTimeObject.innerHTML = "Best: " + String(secToText(bestTime));
+        }
+    }else{
+        if(clearTime < hardBestTime){
+            //Set-Cookie: clearTime;
+            hardBestTime = clearTime;
+            hardbestTimeObject.style.display = "inline";
+            hardbestTimeObject.innerHTML = "Hard Mode Best: " + String(secToText(hardBestTime));
+        }
+    };
+    achvReload();
+};
+
+function keypressEvent(e){
+    if(isGameStarted === true){
+        if(e.key === problemtext[problemnum][1].charAt(problemletternum).toLowerCase()){
+            problemletternum += 1;
+            if(problemtext[problemnum][1].charAt(problemletternum) === "-"){
+                problemletternum += 1;
+            };
+            // document.getElementById("problemtext").innerText = "<font color=#ff0000>" + problemtext[problemnum].substr(0,problemletternum) + "</font>" + "<font color=#000000>" + problemtext[problemnum].substr(problemletternum) + "</font>")";
+            problemObject.innerHTML = problemtext[problemnum][1].substr(problemletternum);
+            if(problemletternum >= problemtext[problemnum][1].length){
+                score += 1;
+                problemletternum = 0;
+                if(score >= problemtext.length){
+                    gameClear();
+                    return
+                }
+                problemload();
+            };
+        }else if(hardmode == 1){
+            penaltyTime += 1;
+            timerReload();
+        };
+    };
+    return true;
+}
+
+function timerReload(){
+    currentTime = (Date.now() - startTime) / 1000 + penaltyTime;
+    timeObject.innerHTML = secToText(currentTime);
+};
+
+function secToText(sec){
+    return String(Math.floor(sec / 60)) + ":" + String(("00" + (Math.floor(sec % 60))).slice(-2));
+};
+
+startButtonObject.addEventListener("click", gameStart, false);
+function gameStart(){
+    if (isGameStarted === false){
+        isGameStarted = true;
+        varReset();
+        startTime = Date.now();
+        if(hardmodeButtonObject.checked){
+            hardmode = 1;
+        }else{
+            hardmode = 0;
+        };
+        hardmodeButtonObject.disabled = true;
+        problemload(); //最初の一問
+        timerReload();   
+        timerID = setInterval(timerReload, 1000);
+        bestTimeObject.innerHTML = "Best: " + String(secToText(bestTime));
+        document.addEventListener("keypress", keypressEvent, false); //キーが押されたとき
+        // document.write(problemtext[problemnum]);
+    };
+};
+
+/*saveButtonObject.addEventListener("click", saveScore, false);
+function saveScore(){
+    //var saveText = String(bestTime);
+    var saveText = bestTime;
+    const blob = new Blob([saveText], {type: "text/plain"});
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a")
+    a.href = url;
+    a.download = "savedata.txt"
+    a.click();
+    URL.revokeObjectURL(url);
+};*/
+
+
+function achvReload(){
+    if (hardmode == 0){
+        if (bestTime <= 1200){
+            achvimg1Object.src = achvimgData[0].src;
+            if (bestTime <= 900){
+                achvimg2Object.src = achvimgData[1].src;
+                if (bestTime <= 600){
+                    achvimg3Object.src = achvimgData[2].src;
+                    if (bestTime <= 420){
+                        achvimg4Object.src = achvimgData[3].src;
+                        if (bestTime <= 300){
+                            achvimg5Object.src = achvimgData[4].src;
+                            if (bestTime <= 180){
+                                achvimg6Object.src = achvimgData[5].src;
+                            };
+                            if (isGameCompleted == 0){
+                                isGameCompleted = 1;
+                                hardmodeButtonObject.style.display = "inline";
+                                buttonBetweenObject.style.display = "block";
+                                hardmodeLabelObject.style.display = "inline";
+                                titleObject.style.color = "#aa0000";
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    }else{
+        if (hardBestTime <= 1200){
+            achvimg1Object.style.borderColor = "#ffdd00";
+            achvtxtTitle1Object.innerHTML = "普通(Hard)";
+            achvtxtDscr1Object.innerHTML = "ハードモードで20分以内にクリア";
+            achvtxtDscr1Object.style.fontSize = "12px";
+            if (hardBestTime <= 900){
+                achvimg2Object.style.borderColor = "#ffdd00";
+                achvtxtTitle2Object.innerHTML = "特急踊り子(Hard)";
+                achvtxtTitle2Object.style.fontSize = "25px";
+                achvtxtDscr2Object.innerHTML = "ハードモードで15分以内にクリア";
+                achvtxtDscr2Object.style.fontSize = "12px";
+                if (hardBestTime <= 600){
+                    achvimg3Object.style.borderColor = "#ffdd00";
+                    achvtxtTitle3Object.innerHTML = "サンライズ(Hard)";
+                    achvtxtTitle3Object.style.fontSize = "25px";
+                    achvtxtDscr3Object.innerHTML = "ハードモードで10分以内にクリア";
+                    achvtxtDscr3Object.style.fontSize = "12px";
+                    if (hardBestTime <= 420){
+                        achvimg4Object.style.borderColor = "#ffdd00";
+                        achvtxtTitle4Object.innerHTML = "新幹線(Hard)";
+                        achvtxtDscr4Object.innerHTML = "ハードモードで7分以内にクリア";
+                        achvtxtDscr4Object.style.fontSize = "12px";
+                        if (hardBestTime <= 300){
+                            achvimg5Object.style.borderColor = "#ffdd00";
+                            achvtxtTitle5Object.innerHTML = "リニア(Hard)";
+                            achvtxtDscr5Object.innerHTML = "ハードモードで5分以内にクリア";
+                            achvtxtDscr5Object.style.fontSize = "12px";
+                            if (hardBestTime <= 180){
+                                achvimg6Object.style.borderColor = "#ffdd00";
+                                achvtxtTitle6Object.innerHTML = "ジェット機(Hard)";
+                                achvtxtDscr6Object.innerHTML = "ハードモードで3分以内にクリア";
+                                achvtxtDscr6Object.style.fontSize = "12px";
+                                titleObject.style.color = "#ffdd00";
+                                titleObject.style.backgroundColor = "#333333";
+                                titleObject.innerHTML = "トカ線タイピング&nbsp;全クリおめでとう！"
+                            };
+                        };
+                    };
+                };
+            };
+        };
+    };
+};
+
+function toHash(d){
+    var hash = (d * 2 + 14 * d + 2) % (2 * d + 1)
+    return hash
+};
+
+function judgeHash(d, h){
+    var hash = toHash(d);
+    if(hash == h){
+        return true
+    }else{
+        return false
+    };
+}
+
+function saveCode(){
+    saveCode = Math.round(bestTime).toString(16) + "%" + toHash(Math.round(bestTime)).toString(16) + "%" + Math.round(hardBestTime).toString(16) + "%" + toHash(Math.round(hardBestTime)).toString(16);
+    alert(saveCode);
+    return saveCode;
+};
+
+function saveGameData(){
+    saveCodeObject.value = saveCode();
+};
+
+function loadGameData(){
+    var loadCode = loadCodeObject.value;
+    var loadCodeArr = new Array();
+    loadCodeArr = loadCode.split("%");
+    var isHashCorrect = judgeHash(loadCodeArr[0], loadCodeArr[1]) && judgeHash(loadCodeArr[2], loadCodeArr[3]);
+    if(isHashCorrect){
+        bestTime = parseInt(loadCodeArr[0],16);
+        hardBestTime = parseInt(loadCodeArr[2],16);
+    }else{
+        loadCodeObject.value = "セーブコードが間違っています。";
+    };
+    achvReload();
+    hardmode = 1;
+    achvReload();
+    hardmode = 0;
+    bestTimeObject.innerHTML = "Best: " + String(secToText(bestTime));
+    if(hardBestTime < 3999){
+        hardbestTimeObject.style.display = "inline";
+        hardbestTimeObject.innerHTML = "Hard Mode Best: " + String(secToText(hardBestTime));
+    };
+};
+
+saveButtonObject.addEventListener("click", saveGameData, false);
+loadButtonObject.addEventListener("click", loadGameData, false);
+
+</script>
+
+</body>
+</html>
