@@ -316,7 +316,7 @@ function gameClear(){
     }else{
         if(clearTime < hardBestTime){
             //Set-Cookie: clearTime;
-            hardBestTime = clearTime;
+            hardBestTime = clearTime + penaltyTime;
             hardbestTimeObject.style.display = "inline";
             hardbestTimeObject.innerHTML = "Hard Mode Best: " + String(secToText(hardBestTime));
         }
