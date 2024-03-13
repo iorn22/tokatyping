@@ -2,7 +2,7 @@
 <html lang="ja">
 <head>
 <meta chrset="utf-8">
-<title>トカ線タイピング</title>
+<title>トカ線タイピングゲーム</title>
 <style>
 body{
     background-color:#dddddd;
@@ -93,6 +93,15 @@ h1{
     border:5px solid #999;
     padding:0px;
 }
+#shareButton{
+    font-size:1.3em;
+    border:5px solid #1da1f2;
+    background-color:#1da1f2;
+    padding:5px;
+    text-decoration:none;
+    font-weight:bold;
+    color:#000000;
+}
 .achvtxt{
     text-align:center;
 }
@@ -141,7 +150,7 @@ h1{
         <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle2">特急踊り子</span><br><span class="achvtxtDiscribe" id="achvtxtDscr2">15分以内にクリア</span></td>
         <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle3">サンライズ</span><br><span class="achvtxtDiscribe" id="achvtxtDscr3">10分以内にクリア</span></td>
         <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle4">新幹線</span><br><span class="achvtxtDiscribe" id="achvtxtDscr4">7分以内にクリア</span></td>
-        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle5">リニア</span><br><span class="achvtxtDiscribe" id="achvtxtDscr5">4分以内にクリア</span></td>
+        <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle5">リニア</span><br><span class="achvtxtDiscribe" id="achvtxtDscr5">5分以内にクリア</span></td>
         <td class="achvtxt"><span class="achvtxtTitle" id="achvtxtTitle6">ジェット機</span><br><span class="achvtxtDiscribe" id="achvtxtDscr6">3分以内にクリア</span></td>
     </tr>
 </table>
@@ -151,6 +160,8 @@ h1{
         <td><button id="saveButton">セーブ</button></td>
         <td class="buttonMargin"></td>
         <td><button id="loadButton">ロード</button></td>
+        <td class="buttonMargin">
+        <td id="share"><button id="shareButton">Twitterで結果を共有</button></td>
         <!--<td><button id="saveButton">ハイスコア情報セーブ<br><small>ページを移動する前に<strong>必ず</strong>押してください</small></button></td>-->
     </tr>
     <tr>
@@ -226,6 +237,7 @@ const buttonBetweenObject = document.getElementById("buttonBetween");
 const hardmodeButtonObject = document.getElementById("hardmodeButton");
 const hardmodeLabelObject = document.getElementById("hardmodeLabel");
 const soundButtonObject = document.getElementById("soundButton");
+const shareButtonObject = document.getElementById("shareButton");
 
 const achvimg1Object = document.getElementById("achvimg1");
 const achvimg2Object = document.getElementById("achvimg2");
@@ -359,6 +371,10 @@ function secToText(sec){
     return String(Math.floor(sec / 60)) + ":" + String(("00" + (Math.floor(sec % 60))).slice(-2));
 };
 
+function secToTextJp(sec){
+    return String(Math.floor(sec / 60)) + "分" + String(("00" + (Math.floor(sec % 60))).slice(-2)) + "秒";
+};
+
 startButtonObject.addEventListener("click", gameStart, false);
 function gameStart(){
     if (isGameStarted === false){
@@ -404,7 +420,7 @@ function achvReload(){
                     achvimg3Object.src = achvimgData[2].src;
                     if (bestTime <= 420){
                         achvimg4Object.src = achvimgData[3].src;
-                        if (bestTime <= 240){
+                        if (bestTime <= 300){
                             achvimg5Object.src = achvimgData[4].src;
                             if (bestTime <= 180){
                                 achvimg6Object.src = achvimgData[5].src;
@@ -444,10 +460,10 @@ function achvReload(){
                         achvtxtTitle4Object.innerHTML = "新幹線(Hard)";
                         achvtxtDscr4Object.innerHTML = "ハードモードで7分以内にクリア";
                         achvtxtDscr4Object.style.fontSize = "12px";
-                        if (hardBestTime <= 240){
+                        if (hardBestTime <= 300){
                             achvimg5Object.style.borderColor = "#ffdd00";
                             achvtxtTitle5Object.innerHTML = "リニア(Hard)";
-                            achvtxtDscr5Object.innerHTML = "ハードモードで4分以内にクリア";
+                            achvtxtDscr5Object.innerHTML = "ハードモードで5分以内にクリア";
                             achvtxtDscr5Object.style.fontSize = "12px";
                             if (hardBestTime <= 180){
                                 achvimg6Object.style.borderColor = "#ffdd00";
@@ -482,7 +498,6 @@ function judgeHash(d, h){
 
 function saveCode(){
     saveCode = Math.round(bestTime).toString(16) + "%" + toHash(Math.round(bestTime)).toString(16) + "%" + Math.round(hardBestTime).toString(16) + "%" + toHash(Math.round(hardBestTime)).toString(16);
-    alert(saveCode);
     return saveCode;
 };
 
@@ -494,10 +509,13 @@ function loadGameData(){
     var loadCode = loadCodeObject.value;
     var loadCodeArr = new Array();
     loadCodeArr = loadCode.split("%");
+    for(i = 0; i < 4; i++){
+        loadCodeArr[i] = parseInt(loadCodeArr[i], 16);
+    }    
     var isHashCorrect = judgeHash(loadCodeArr[0], loadCodeArr[1]) && judgeHash(loadCodeArr[2], loadCodeArr[3]);
     if(isHashCorrect){
-        bestTime = parseInt(loadCodeArr[0],16);
-        hardBestTime = parseInt(loadCodeArr[2],16);
+        bestTime = loadCodeArr[0];
+        hardBestTime = loadCodeArr[2];
     }else{
         loadCodeObject.value = "セーブコードが間違っています。";
     };
@@ -514,6 +532,17 @@ function loadGameData(){
 
 saveButtonObject.addEventListener("click", saveGameData, false);
 loadButtonObject.addEventListener("click", loadGameData, false);
+
+function scoreToUrl(b, hb){
+    url = "http://twitter.com/share?url=https://iorn22.github.io/tokatyping/&text=" + "東海道本線を%0aノーマルモードで" + secToTextJp(b) + "、%0aハードモードで" + secToTextJp(hb) + "で%0a走破しました！" + "&hashtags=トカ線タイピング"
+    return url;
+};
+
+function shareScore(){
+    window.open(scoreToUrl(bestTime, hardBestTime), "_blank");
+};
+
+shareButtonObject.addEventListener("click", shareScore, false);
 
 </script>
 
