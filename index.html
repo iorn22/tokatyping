@@ -65,6 +65,17 @@ h1{
     font-weight:bold;
     text-align:center;
 }
+#problemtext-next{
+    font-size:25px;
+    font-weight:bold;
+    text-align:center;
+}
+#gauge{
+    margin:0px;
+    width:100%;
+    height:15px;
+    background-color:#f68b1e;
+}
 #achv{
     margin:auto;
     border-spacing:20px 5px;
@@ -121,7 +132,7 @@ h1{
     <tr>
         <td><input type="checkbox" id="soundButton">効果音<br><small>&emsp;&emsp;クリア時のみ</small></input></td>
         <td class="buttonMargin"></td>
-        <td><button id="startButton">ゲームスタート</button></td>
+        <td><button id="startButton" name="">ゲームスタート</button></td>
         <td id="buttonBetween"></td>
         <td><input type="checkbox" id="hardmodeButton"><span id="hardmodeLabel">Hardモード<br><small>&emsp;&emsp;ミスすると1秒のペナルティがつくモード</small></span></input></td>
         <!--<td><button id="saveButton">ハイスコア情報セーブ<br><small>ページを移動する前に<strong>必ず</strong>押してください</small></button></td>-->
@@ -131,10 +142,11 @@ h1{
 <div id="scoretext">0</div>
 <div id="problemtext-kanji">ここのローマ字表記が下に出ます</div>
 <div id="problemtext">ここに書かれている内容を入力してください</div>
+<div id="problemtext-next"></div>
 <div id="timetext">0:00</div>
 <div id="besttimetext">Best: 99:99</div><br><br>
 <div id="hardbesttimetext">Hard Mode Best: 99:99</div>
-<br><br><hr>
+<div id="gauge"></div>
 <h1>実績</h1>
 <table id="achv">
     <tr>
@@ -223,6 +235,7 @@ const titleObject = document.getElementById("title");
 const scoreObject = document.getElementById("scoretext");
 const problemObjectKanji = document.getElementById("problemtext-kanji");
 const problemObject = document.getElementById("problemtext");
+const problemObjectNext = document.getElementById("problemtext-next");
 const startButtonObject = document.getElementById("startButton");
 const timeObject = document.getElementById("timetext");
 var timerID = 0;
@@ -238,6 +251,7 @@ const hardmodeButtonObject = document.getElementById("hardmodeButton");
 const hardmodeLabelObject = document.getElementById("hardmodeLabel");
 const soundButtonObject = document.getElementById("soundButton");
 const shareButtonObject = document.getElementById("shareButton");
+const gaugeObject = document.getElementById("gauge");
 
 const achvimg1Object = document.getElementById("achvimg1");
 const achvimg2Object = document.getElementById("achvimg2");
@@ -307,6 +321,11 @@ function problemload(){
     problemnum = score;
     problemObjectKanji.innerHTML = problemtext[problemnum][0];
     problemObject.innerHTML = problemtext[problemnum][1];
+    if(problemnum == problemtext.length - 1){
+        problemObjectNext.innerHTML = "";
+    }else{
+        problemObjectNext.innerHTML = "Next: " + problemtext[problemnum + 1][0];
+    };
 };
 
 function gameClear(){
@@ -348,6 +367,7 @@ function keypressEvent(e){
             if(problemletternum >= problemtext[problemnum][1].length){
                 score += 1;
                 problemletternum = 0;
+                gaugeObject.style.width = score / problemtext.length * 100 + "%";
                 if(score >= problemtext.length){
                     gameClear();
                     return
@@ -388,7 +408,7 @@ function gameStart(){
         };
         hardmodeButtonObject.disabled = true;
         problemload(); //最初の一問
-        timerReload();   
+        timerReload();
         timerID = setInterval(timerReload, 1000);
         bestTimeObject.innerHTML = "Best: " + String(secToText(bestTime));
         document.addEventListener("keypress", keypressEvent, false); //キーが押されたとき
